@@ -1,5 +1,5 @@
 var treeBuilder = {
-    initialArray: [],
+    _initialArray: [],
 
     getSmallestArrayElem: function (analyzedArray) {
         var smallest = {
@@ -25,41 +25,55 @@ var treeBuilder = {
         return smallest;
     },
     leStartDatDanceAndGetMeATree: function (initArray) {
-        this.initialArray = initArray;
+        this._initialParsedArray = this._parseInitialArray(initArray);
+        var x =  this._doTheMagic(this._initialParsedArray);
 
-        var smallest = this.getSmallestArrayElem(this.initialArray);
+        var y = this._doTheMagic(x);
+        var z = this._doTheMagic(y);
+        var v = this._doTheMagic(z);
+        var a = this._doTheMagic(v);
+        return a;
+
+    },
+    _doTheMagic: function (parsedArray) {
+        var analyzed = parsedArray;
+
+        var smallest = this.getSmallestArrayElem(analyzed);
         console.log(smallest);
-
-
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
 
-        /// NAGLOWEK NOWY
+
+        /// NAGLOWEK NOWY - POCZATEK
         var newArray = {
             header: [],
             val: []
         }
 
         var counter = 0;
-        for (var i = 0; i < initArray.header.length; ++i) {
+        for (var i = 0; i < analyzed.header.length; ++i) {
             var columnName = '';
             if (i === lower) {
-                columnName = initArray.header[lower] + initArray.header[higher];
+                columnName = {
+                    name: analyzed.header[lower].name + analyzed.header[higher].name,
+                    prevIndexes: analyzed.header[lower].prevIndexes.concat([lower, higher]).concat(analyzed.header[higher].prevIndexes)
+                };
+
             } else if (i === higher) {
                 continue;
             } else {
-                columnName = initArray.header[i];
+                columnName = analyzed.header[i];
             }
             newArray.header[counter] = columnName;
             counter++;
         }
 
-        /// NAGLOWEK NOWY
+        /// NAGLOWEK NOWY - KONIEC
 
 
         for (var i = 0; i < newArray.header.length; ++i) {
-            var newRow = [];
-            newArray.val[i] = newRow;
+            // nowy "wiersz" naszej tabeli
+            newArray.val[i] = [];
 
             for (var j = 0; j < newArray.header.length; ++j) {
 
@@ -69,19 +83,22 @@ var treeBuilder = {
                     continue;
                 }
 
+                // Początek magii kolejnego kroku:
+
                 if (i !== lower && j === lower) {
-                    newArray.val[i][j] = (initArray.val[i][lower] + initArray.val[i][higher]) / 2
+                    newArray.val[i][j] = (analyzed.val[i][lower] + analyzed.val[i][higher]) / 2
                 } else if (i !== lower && j !== lower) {
-                    var originalIdentifierIndexOfFirstCrossing = initArray.header.indexOf(newArray.header[j]);
-                    newArray.val[i][j] = initArray.val[i][originalIdentifierIndexOfFirstCrossing];
+                    var originalIdentifierIndexOfFirstCrossing = analyzed.header.indexOf(newArray.header[j]);
+                    var originalIdentifierIndexOfSecondCrossing = analyzed.header.indexOf(newArray.header[i]);
+                    newArray.val[i][j] = analyzed.val[originalIdentifierIndexOfSecondCrossing][originalIdentifierIndexOfFirstCrossing];
 
                 } else if (i === lower) {
-                    var originalIdentifierIndexOfFirstCrossing = initArray.header.indexOf(newArray.header[j]);
+                    var originalIdentifierIndexOfFirstCrossing = analyzed.header.indexOf(newArray.header[j]);
 
-                    if(originalIdentifierIndexOfFirstCrossing < higher)
-                        newArray.val[i][j] = (initArray.val[i][originalIdentifierIndexOfFirstCrossing] + initArray.val[originalIdentifierIndexOfFirstCrossing][higher]) / 2
+                    if (originalIdentifierIndexOfFirstCrossing < higher)
+                        newArray.val[i][j] = (analyzed.val[i][originalIdentifierIndexOfFirstCrossing] + analyzed.val[originalIdentifierIndexOfFirstCrossing][higher]) / 2
                     else
-                        newArray.val[i][j] = (initArray.val[i][originalIdentifierIndexOfFirstCrossing] + initArray.val[higher][originalIdentifierIndexOfFirstCrossing]) / 2
+                        newArray.val[i][j] = (analyzed.val[i][originalIdentifierIndexOfFirstCrossing] + analyzed.val[higher][originalIdentifierIndexOfFirstCrossing]) / 2
 
                 }
 
@@ -91,9 +108,19 @@ var treeBuilder = {
         console.log(this.getSmallestArrayElem(newArray))
         return newArray;
     },
-    _parseInitialArray : function(initialArray){
-        this.initialArray = initialArray;
+    _parseInitialArray: function (initialArray) {
+        this._initialArray = initialArray;
+        var parsed = {
+            header: [],
+            val: []
+        }
+        parsed.val = initialArray.val;
 
+        for (var i = 0; i < initialArray.header.length; ++i) {
+            parsed.header.push({name: initialArray.header[i], prevIndexes: []})
+        }
+        console.log(parsed)
+        return parsed;
 
     }
 }
