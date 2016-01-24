@@ -9,41 +9,71 @@
 	<script src="scripts/bootstrap.min.js"></script>
 	<script src="scripts/model/Node.js"></script>
 	<script src="scripts/algorithms.js"></script>
+	<script src="scripts/functions.js"></script>
 </head>
 <body>
 <div class="container">
-	<div class="jumbotron">
-		<h2><b>Projekt 02</b>, badanie podobieństwa trzech lub więcej sekwencji metodą progresywną</h2>
+	<div class="jumbotron" style="text-align:center; background: #fff;">
+		<h2>Badanie podobieństwa trzech lub więcej sekwencji metodą progresywną</h2>
 		<i>Autorzy: Domagała Bartosz, Kornata Jarosław, Wnuk Jakub</i>
 	</div>
+</div>
 	
+	<div class="section">
+	<div class="container">
 	<!-- BEGIN: TO ZROBI QUETZU  -->
-	<h2>Dane wejściowe</h2>
+	<h3>Dane wejściowe</h3>
+		<label for="usr">Ile sekwencji chcesz wprowadzić?</label>
+		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="1" />
+		<button class="btn btn-primary" style="display:inline" onclick="createInputs()">OK</button>
+		<div class="form-group" id="inputs">
+		</div>
+	</div>	
+	</div>	
 	
-	<h2>Tworzenie macierzy odległości (porównywanie sekwencji parami</h2>
+	<div class="section">
+	<div class="container">
+	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami</h3>
 		<ol>
 		<li>?? Modyfikacje sekwencji początkowych</li>
 		<li>Liczenie SP, im mniejsze tym lepsze (wybrana funkcja) -> wybór najmniejszego</li>
 		<li>Obliczenie macierzy odległości na podstawie odległości Levensteina</li>		
 		</ol>
 	<!-- END: TO ZROBI QUETZU  -->
+	</div>	
+	</div>	
 	<!-- BEGIN: TO ZROBI JAREK  -->
-	<h2>Obliczanie drzewa naprowadzającego</h2>
+	<div class="section">
+	<div class="container">
+	<h3>Obliczanie drzewa naprowadzającego</h3>
 	<div id="jarkowaEnklawa"></div>
 	
 	<!-- END: TO ZROBI JAREK  -->
+	</div>	
+	</div>
 	<!-- BEGIN: TO ZROBI QBSU  -->
-	<h2>Oddzielne przyrównanie najbliższych sekwencji (programowanie dynamiczne)</h2>
+	<div class="section">
+	<div class="container">
+		<h3>Oddzielne przyrównanie najbliższych sekwencji (programowanie dynamiczne)</h3>
 	
-	<h2>Tworzenie sekwencji konsensusowej - profil</h2>
+	</div>	
+	</div>
 	
+	<div class="section">
+	<div class="container">
+	<h3>Tworzenie sekwencji konsensusowej - profil</h3>
+	
+	
+	</div>	
+	</div>
 	<!-- END: TO ZROBI QBSU  -->
 	
-	<h2>Wynik</h2>
+	<div class="section">
+	<div class="container">
+	<h3>Wynik</h3>
 
-
-
-</div>
+	</div>	
+	</div>
 
 </body>
 </html>
