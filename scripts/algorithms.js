@@ -59,19 +59,28 @@ $(document).ready(function () {
 
             ]
     }
-    algo.lePrinte(lePrawdziweTabelke)
-
-
-    algo.lePrinte(treeBuilder.leStartDatDanceAndGetMeATree(lePrawdziweTabelke))
-
-    function Tree(rootNode) {
-        this._root = rootNode;
+    var leNowe = {
+        header: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10'],
+        val: [
+            ['-', 0.8, 0.3, 0.3, 1, 0.1, 0.5, 0.3, 0.4, 0.3],
+            ['-', '-', 0.875, 0.714, 1, 0.778, 0.833, 0.714, 0.857, 0.875],
+            ['-', '-', '-', 0.444, 1, 0.4, 0.667, 0.6, 0.556, 0.444],
+            ['-', '-', '-', '-', 1, 0.4, 0.667, 0.444, 0.143, 0.444],
+            ['-', '-', '-', '-', '-', 1, 1, 1, 1, 1],
+            ['-', '-', '-', '-', '-', '-', 0.444, 0.222, 0.5, 0.4],
+            ['-', '-', '-', '-', '-','-', '-',0.286, 0.625, 0.286],
+            ['-', '-', '-', '-', '-','-', '-',  '-',0.556, 0.444],
+            ['-', '-', '-', '-', '-','-', '-', '-',  '-',0.375],
+            ['-', '-', '-', '-', '-','-', '-', '-', '-', '-']
+        ]
     }
 
-    var v = new Tree();
 
-    var c = new MBINode("Root");
-    c.insertChild(new MBINode("jeden"))
-    c.insertChild(new MBINode("dwa"))
+    algo.lePrinte(lePrawdziweTabelke)
+
+    treeBuilder.buildTree(leNowe)
+    algo.lePrinte(treeBuilder._finalArray)
+
+
 
 })

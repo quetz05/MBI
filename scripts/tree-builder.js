@@ -1,6 +1,7 @@
 var treeBuilder = {
     _initialArray: [],
-    _tree : new Tree(new MBINode("ROOT")),
+    _tree: new Tree(new MBINode("ROOT")),
+    _finalArray : [],
     _getSmallestArrayElem: function (analyzedArray) {
         var smallest = {
             x: 1,
@@ -24,27 +25,35 @@ var treeBuilder = {
 
         return smallest;
     },
-    leStartDatDanceAndGetMeATree: function (initArray) {
+    buildTree: function (initArray) {
         this._initialParsedArray = this._parseInitialArray(initArray);
 
         var arrayToProcess = this._initialParsedArray;
 
         while (arrayToProcess.header.length > 2) {
-            arrayToProcess = this._doTheMagic(arrayToProcess);
+            arrayToProcess = this._processArray(arrayToProcess);
         }
-        return arrayToProcess;
+        this._addToTree(arrayToProcess);
+
+        this._finalArray = arrayToProcess;
+        return this._tree;
 
     },
-    _doTheMagic: function (parsedArray) {
+    _getFinalArray : function(){
+        return this._finalArray;
+    },
+    _processArray: function (parsedArray) {
         var analyzed = parsedArray;
 
-        var smallest = this._getSmallestArrayElem(analyzed);
+        var smallest = this._getSmallestArrayElem(parsedArray);
 
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
 
-        var aaa = analyzed.header[lower].name
+        var lowerName = analyzed.header[lower].name;
+        var higherName = analyzed.header[higher].name;
 
+        this._addToTree(analyzed);
 
         /// NAGLOWEK NOWY - POCZATEK
         var newArray = {
@@ -57,7 +66,7 @@ var treeBuilder = {
             var columnName = '';
             if (i === lower) {
                 columnName = {
-                    name: analyzed.header[lower].name + analyzed.header[higher].name,
+                    name: lowerName + higherName,
                     prevIndexes: analyzed.header[lower].prevIndexes.concat(analyzed.header[higher].prevIndexes) // Dodajemy poprzednie indeksy - składowe
                 };
 
@@ -118,7 +127,8 @@ var treeBuilder = {
         }
 
         return newArray;
-    },
+    }
+    ,
     _parseInitialArray: function (initialArray) {
         this._initialArray = initialArray;
         var parsed = {
@@ -132,7 +142,8 @@ var treeBuilder = {
         }
 
         return parsed;
-    },
+    }
+    ,
     _permute: (function () {
         // http://jsfiddle.net/jinwolf/Ek4N5/29/
         var results = [];
@@ -184,7 +195,9 @@ var treeBuilder = {
         if (y <= x) return true;
         else return false;
 
-    },
+    }
+
+    ,
     _getValuesInRange: function (values, arrayOfRowPrevIndexes, arrayOfColumnPrevIndexes) {
         var rowPermutations = this._permute.getPermutations(arrayOfRowPrevIndexes, 2);
         var colPermutations = this._permute.getPermutations(arrayOfColumnPrevIndexes, 2);
@@ -201,7 +214,8 @@ var treeBuilder = {
                 ret.push(arr)
         }
         return ret;
-    },
+    }
+    ,
     _checkIfUpper: function (array) {
         // Sprawda ktore punkty tablicy znaduja sie pod przekatna i zwraca tablice tylko punktow nad przekatna
         var ret = [];
@@ -211,7 +225,8 @@ var treeBuilder = {
                 ret.push(arr)
         }
         return ret;
-    },
+    }
+    ,
     _arrayContainsElem: function (array, x, y) {
 
         for (var i = 0; i < array.length; ++i) {
@@ -224,5 +239,35 @@ var treeBuilder = {
         }
         return false;
 
+    },
+    _addToTree: function(array){
+        var smallest = this._getSmallestArrayElem(array);
+
+        var lower = Math.min(smallest.x, smallest.y);
+        var higher = Math.max(smallest.x, smallest.y);
+
+        var lowerName = array.header[lower].name;
+        var higherName = array.header[higher].name;
+
+        var lowerNode = this._tree.findNodeAndRemove(lowerName);
+        var higherNode = this._tree.findNodeAndRemove(higherName);
+
+        if (lowerNode === -1)
+            lowerNode = new MBINode(lowerName);
+        if (higherNode === -1)
+            higherNode = new MBINode(higherName);
+
+        var newNode = new MBINode(lowerName + higherName);
+
+        var higherNodeLength = higherNode.getLengthToTheBottom();
+        var lowerNodeLength = lowerNode.getLengthToTheBottom();
+
+        higherNode.parentDist = (smallest.value / 2) - higherNodeLength;
+        lowerNode.parentDist = ( smallest.value / 2 ) - lowerNodeLength;
+
+        newNode.insertChild(lowerNode)
+        newNode.insertChild(higherNode)
+
+        this._tree.insert(newNode);
     }
 }
