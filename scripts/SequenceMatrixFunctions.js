@@ -26,7 +26,9 @@ function createMultipleSequenceAlignments()
 
     for(var i=3; i <= inputNo; i++)
     {
-        inputs += '<input type="text" value="' + NeedlemanWunsch($('#input' + (i-1).toString()).val(), $('#input' + i.toString()).val())[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+
+        var NW = NeedlemanWunsch($('#input' + (i-1).toString()).val(), $('#input' + i.toString()).val());
+        inputs += '<input type="text" value="' + NW[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
 
 
     }
@@ -61,7 +63,7 @@ function CreateSequenceDistanceMatrix()
         for(var j = 0; j < matrixSize; j++)
         {
             if((j-i) > 0)
-                matrix.val[i][j] = computeDistance($('#input' + (i+1).toString()).val(), $('#input' + (j+1).toString()).val());
+                matrix.val[i][j] = computeDistance($('#alignInput' + (i+1).toString()).val(), $('#alignInput' + (j+1).toString()).val());
 
             else
                 matrix.val[i][j] =  '-';
@@ -124,71 +126,76 @@ function DrawMatrix(matrix, id)
     $('#sequenceDistanceMatrix').html(table);
 }
 
-function NeedlemanWunsch(seq1, seq2)
+function NeedlemanWunsch(s1, s2)
 {
-    seq1 = seq1.toString();
-    seq2 = seq2.toString();
+    var sp = parseInt($('#sameDistance').val());
+    var gp = parseInt($('#otherDistance').val());
+    var gc = "-";
 
-    var sameDistance = parseInt($('#sameDistance').val());
-    var otherDistance = parseInt($('#otherDistance').val());
 
-    var array = [];
-
-    for(var i=0;i<=seq2.length;i++)
+    var arr = [];
+    for(var i=0;i<=s2.length;i++)
     {
-        array[i] = [];
-        for(var j=0;j<=seq1.length;j++)
-            array[i][j] = null;
+        arr[i] = [];
+        for(var j=0;j<=s1.length;j++)
+        {
+            arr[i][j] = null;
+        }
     }
 
-    array[0][0] = 0;
+    arr[0][0] = 0;
 
-    for(var i=1;i<=seq2.length;i++)
-        array[0][i] = array[i][0] = -1 * i;
-
-    for(var i=1;i<=seq2.length;i++)
+    for(var i=1;i<=s2.length;i++)
     {
-        for(var j=1;j<=seq1.length;j++)
+        arr[0][i] = arr[i][0] = -1 * i;
+    }
+
+    for(var i=1;i<=s2.length;i++)
+    {
+        for(var j=1;j<=s1.length;j++)
         {
-            array[i][j] = Math.max(
-                array[i-1][j-1] + (seq2[i-1] === seq1[j-1] ? sameDistance : otherDistance),
-                array[i-1][j] + otherDistance,
-                array[i][j-1] + otherDistance
+            arr[i][j] = Math.max(
+                arr[i-1][j-1] + (s2[i-1] === s1[j-1] ? sp : gp),
+                arr[i-1][j] + gp,
+                arr[i][j-1] + gp
             );
         }
     }
 
-    var i = seq2.length;
-    var j = seq1.length;
-    var nseq1 = [];
-    var nseq2 = [];
+    var i = s2.length;
+    var j = s1.length;
+    var sq1 = [];
+    var sq2 = [];
 
-    do {
-        var t = array[i-1][j];
-        var d = array[i-1][j-1];
-        var l = array[i][j-1];
+    do
+    {
+
+        var t = arr[i-1][j];
+        var d = arr[i-1][j-1];
+        var l = arr[i][j-1];
         var max = Math.max(t, d, l);
 
-        switch(max) {
+        switch(max)
+        {
             case t:
                 i--;
-                nseq1.push('-');
-                nseq2.push(seq2[i]);
+                sq1.push(gc);
+                sq2.push(s2[i]);
                 break;
             case d:
                 j--;
                 i--;
-                nseq1.push(seq1[j]);
-                nseq2.push(seq1[i]);
+                sq1.push(s1[j]);
+                sq2.push(s2[i]);
                 break;
             case l:
                 j--;
-                nseq1.push(seq1[j]);
-                nseq2.push('-');
+                sq1.push(s1[j]);
+                sq2.push(gc);
                 break;
         }
 
     } while(i>0 && j>0);
 
-    return [(nseq1.reverse()).join(''), (nseq2.reverse()).join('')];
+    return [(sq1.reverse()).join(''), (sq2.reverse()).join('')]
 }
