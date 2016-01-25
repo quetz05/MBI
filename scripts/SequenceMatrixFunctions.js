@@ -16,21 +16,26 @@ function createMultipleSequenceAlignments()
         return false;
     }
 
+    var values = [inputNo];
     var firstNeedleman = NeedlemanWunsch($('#input1').val(), $('#input2').val());
+    values[0] = firstNeedleman[0];
+    values[1] = firstNeedleman[1];
 
-    alert(firstNeedleman + ': ' + firstNeedleman[0] + ' ' + firstNeedleman[1]);
+    for(var i=2; i < inputNo; i++)
+    {
+        var NW = NeedlemanWunsch(values[i-1], $('#input' + (i+1).toString()).val());
+        values[i] = NW[1];
+        alert(NW);
+        //alert(NW);
+        //inputs += '<input type="text" value="' + NW[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+
+
+    }
 
     var inputs = '';
-    inputs += '<input type="text" value="' + firstNeedleman[0]  + '" class="form-control" id="alignInput1" style="margin:8px;" placeholder="Wyrównana sekwencja 1" />';
-    inputs += '<input type="text" value="' + firstNeedleman[1]  + '" class="form-control" id="alignInput2" style="margin:8px;" placeholder="Wyrównana sekwencja 2" />';
-
-    for(var i=3; i <= inputNo; i++)
+    for(var i = 0; i < values.length; i++)
     {
-
-        var NW = NeedlemanWunsch($('#input' + (i-1).toString()).val(), $('#input' + i.toString()).val());
-        inputs += '<input type="text" value="' + NW[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
-
-
+        inputs += '<input type="text" value="' + values[i]  + '" class="form-control" id="alignInput' + (i+1).toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + (i+1).toString() + '" />';
     }
 
     $('#alignmentsSequences').html(inputs.toString());
