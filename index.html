@@ -11,7 +11,7 @@
 	<script src="scripts/SequenceMatrixFunctions.js"></script>
 	<script src="scripts/functions.js"></script>
 </head>
-<body>
+<body onload="createInputs()">
 <div class="container">
 	<div class="jumbotron" style="text-align:center; background: #fff;">
 		<h2>Badanie podobieństwa trzech lub więcej sekwencji metodą progresywną</h2>
@@ -24,7 +24,7 @@
 	<!-- BEGIN: TO ZROBI QUETZU  -->
 	<h3>Dane wejściowe</h3>
 		<label for="usr">Ile sekwencji chcesz wprowadzić?</label>
-		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="0" onclick="createInputs()" />
+		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="3" onclick="createInputs()" />
 		<div class="form-group" id="inputs">
 		</div>
 	</div>	
@@ -41,7 +41,6 @@
 			<button class="btn btn-primary" style="margin:15px;" onclick="DrawSequenceDistanceMatrix()">Twórz macierz odległości</button>
 			<div id="alignmentsSequences" style="text-align:center;"></div>
 			<div id="sequenceDistanceMatrix"></div>
-			<button class="btn btn-primary" style="margin:15px;" onclick="NeedlemanWunsch()">TEST</button>
 		</div>
 	<!-- END: TO ZROBI QUETZU  -->
 	</div>	
