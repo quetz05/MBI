@@ -10,23 +10,25 @@ function DrawSequenceDistanceMatrix()
 function createMultipleSequenceAlignments()
 {
     var inputNo = $('#inputNo').val();
-    if(inputNo <= 0)
+    if(inputNo < 2)
     {
-        $('#alignmentsSequences').html("<span style='color:red;'>Brak sekwencji!</span>");
+        $('#alignmentsSequences').html("<span style='color:red;'>Brak przynajmniej dwóch sekwencji!</span>");
         return false;
     }
 
-    var inputs = '';
-    for(var i=1; i <= inputNo; i++)
-        inputs += '<input type="text" value="' + $('#input' + i.toString()).val() + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+    // Wyliczenie sekwencji
+    var firstNeedleman = NeedlemanWunsch($('#input1').val(), $('#input2').val());
+    var inputs = '<input type="text" value="' + firstNeedleman[0]  + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
+    inputs += '<input type="text" value="' + firstNeedleman[1]  + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
+
+    for(var i=3; i <= inputNo; i++)
+    {
+            inputs += '<input type="text" value="' + $('#input' + i.toString()).val() + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
+
+    }
+
 
     $('#alignmentsSequences').html(inputs.toString());
-}
-
-function multipleSequenceAlignments()
-{
-
-
 }
 
 // funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
@@ -36,7 +38,8 @@ function CreateSequenceDistanceMatrix()
     var matrixSize = $('#inputNo').val();
 
     //tworzenie struktury macierzy
-    var matrix = {
+    var matrix =
+    {
         header: [matrixSize],
         val: []
     }
@@ -59,33 +62,6 @@ function CreateSequenceDistanceMatrix()
     }
 
     return matrix;
-}
-
-function computeDistance(seq1, seq2)
-{
-    seq1 = seq1.toString();
-    seq2 = seq2.toString();
-    if(seq1.length != seq2.length)
-        return 'ERROR!';
-
-    var sameDistance = parseInt($('#sameDistance').val());
-    var otherDistance = parseInt($('#otherDistance').val());
-    var lineDistance = parseInt($('#lineDistance').val());
-
-    var distance = 0;
-
-
-    for(var i = 0; i < seq1.length; i++)
-    {
-        if(seq1.charAt(i) == '-' || seq2.charAt(i) == '-')
-            distance += lineDistance;
-        else if(seq1.charAt(i) == seq2.charAt(i))
-            distance += sameDistance;
-        else
-            distance += otherDistance;
-    }
-
-    return distance;
 }
 
 // funkcja rysuj¹ca macierz (w postaci tabeli) i wstawiaj¹ca j¹ na stronê
@@ -114,69 +90,68 @@ function DrawMatrix(matrix, id)
 }
 
 
-// funkcja z Jarkowej Enklawy
-function createJarekTable()
+function NeedlemanWunsch(seq1, seq2)
 {
-    $(document).ready(function () {
-        var algo = {
+    var sameDistance = parseInt($('#sameDistance').val());
+    var otherDistance = parseInt($('#otherDistance').val());
 
-            // Wypisanie tabelki
-            lePrinte: function (analyzedObject) {
-                var table = '<table class="table table-bordered "><thead><th></th>';
+    var array = [];
 
+    for(var i=0;i<=seq2.length;i++)
+    {
+        array[i] = [];
+        for(var j=0;j<=seq1.length;j++)
+            array[i][j] = null;
+    }
 
-                for (var i = 0; i < analyzedObject.header.length; ++i) {
-                    table += '<th>' + analyzedObject.header[i] + '</th>';
-                }
-                table += '</thead><tbody>';
+    array[0][0] = 0;
 
-                for (var i = 0; i < analyzedObject.header.length; ++i) {
-                    var currentRowName = analyzedObject.header[i];
-                    table += '<tr><td>' + currentRowName + '</td>';
+    for(var i=1;i<=seq2.length;i++)
+        array[0][i] = array[i][0] = -1 * i;
 
-                    for (var j = 0; j < analyzedObject.val.length; ++j) {
-
-                        table += '<td>' + analyzedObject.val[i][j] + '</td>';
-                    }
-                    table += '</tr>'
-
-                }
-                table += '</tbody></table>';
-                $(table).appendTo('#jarkowaEnklawa')
-
-
-            }
+    for(var i=1;i<=seq2.length;i++)
+    {
+        for(var j=1;j<=seq1.length;j++)
+        {
+            array[i][j] = Math.max(
+                array[i-1][j-1] + (seq2[i-1] === seq1[j-1] ? sameDistance : otherDistance),
+                array[i-1][j] + otherDistance,
+                array[i][j-1] + otherDistance
+            );
         }
-        // -----------------
-        // |   | A | B | C |
-        // -----------------
-        // | A | - |19 |27 |
-        // -----------------
-        // | B | - | - | 3 |
-        // ----------------
-        // | C | - | - | - |
-        // -----------------
+    }
 
-        var leTesteTabelke = {
-            header: ['A', 'B', 'C'],
-            val: [
-                ['-', 19, 27],
-                ['-', '-', 3],
-                ['-', '-', '-']]
+    var i = seq2.length;
+    var j = seq1.length;
+    var nseq1 = [];
+    var nseq2 = [];
+
+    do {
+        var t = array[i-1][j];
+        var d = array[i-1][j-1];
+        var l = array[i][j-1];
+        var max = Math.max(t, d, l);
+
+        switch(max) {
+            case t:
+                i--;
+                nseq1.push('-');
+                nseq2.push(seq2[i]);
+                break;
+            case d:
+                j--;
+                i--;
+                nseq1.push(seq1[j]);
+                nseq2.push(seq1[i]);
+                break;
+            case l:
+                j--;
+                nseq1.push(seq1[j]);
+                nseq2.push('-');
+                break;
         }
 
-        algo.lePrinte(leTesteTabelke)
+    } while(i>0 && j>0);
 
-        function Tree(rootNode) {
-            this._root = rootNode;
-        }
-
-        var v = new Tree();
-
-        var c = new MBINode("Root");
-        c.insertChild(new MBINode("jeden"))
-        c.insertChild(new MBINode("dwa"))
-
-    })
+    return [(nseq1.reverse()).join(''), (nseq2.reverse()).join('')];
 }
-

@@ -35,12 +35,13 @@
 	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami)</h3>
 		<div style="text-align: center;">
 			<div class="col-md-4 col-sm-4">Wartość za ten sam znak: <input class="form-control" id="sameDistance" style="width:80px; margin: auto;" value="1"/></div>
-			<div class="col-md-4 col-sm-4">Wartość za różny znak: <input class="form-control" id="otherDistance" style="width:80px; margin: auto;" value="0"/></div>
+			<div class="col-md-4 col-sm-4">Wartość za różny znak: <input class="form-control" id="otherDistance" style="width:80px; margin: auto;" value="-1"/></div>
 			<div class="col-md-4 col-sm-4">Wartość za przerwę: <input class="form-control" id="lineDistance" style="width:80px; margin: auto;" value="0"/></div>
 			<div class="clear"></div>
 			<button class="btn btn-primary" style="margin:15px;" onclick="DrawSequenceDistanceMatrix()">Twórz macierz odległości</button>
 			<div id="alignmentsSequences" style="text-align:center;"></div>
 			<div id="sequenceDistanceMatrix"></div>
+			<button class="btn btn-primary" style="margin:15px;" onclick="NeedlemanWunsch()">TEST</button>
 		</div>
 	<!-- END: TO ZROBI QUETZU  -->
 	</div>	

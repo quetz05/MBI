@@ -2,9 +2,9 @@
 function createInputs()
 {
 	var inputNo = $('#inputNo').val();
-	if(inputNo <= 0)
+	if(inputNo < 2)
 	{
-		$('#inputs').html("<span style='color:red;'>Wybierz liczbę większą od 0</span>");
+		$('#inputs').html("<span style='color:red;'>Wybierz liczbę większą od 1</span>");
 		return;
 	}
 	
@@ -14,3 +14,4 @@ function createInputs()
 		
 	$('#inputs').html(inputs.toString());
 }
+
