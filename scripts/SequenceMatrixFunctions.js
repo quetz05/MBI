@@ -89,6 +89,32 @@ function DrawMatrix(matrix, id)
     $('#sequenceDistanceMatrix').html(table);
 }
 
+function computeDistance(seq1, seq2)
+{
+    seq1 = seq1.toString();
+    seq2 = seq2.toString();
+    if(seq1.length != seq2.length)
+        return 'ERROR!';
+
+    var sameDistance = parseInt($('#sameDistance').val());
+    var otherDistance = parseInt($('#otherDistance').val());
+    var lineDistance = parseInt($('#lineDistance').val());
+
+    var distance = 0;
+
+
+    for(var i = 0; i < seq1.length; i++)
+    {
+        if(seq1.charAt(i) == '-' || seq2.charAt(i) == '-')
+            distance += lineDistance;
+        else if(seq1.charAt(i) == seq2.charAt(i))
+            distance += sameDistance;
+        else
+            distance += otherDistance;
+    }
+
+    return distance;
+}
 
 function NeedlemanWunsch(seq1, seq2)
 {
