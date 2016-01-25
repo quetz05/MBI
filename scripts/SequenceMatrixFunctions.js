@@ -26,7 +26,6 @@ function createMultipleSequenceAlignments()
         var NW = NeedlemanWunsch(values[i-1], $('#input' + (i+1).toString()).val());
         values[i-1] = NW[0];
         values[i] = NW[1];
-        alert(NW);
         //alert(NW);
         //inputs += '<input type="text" value="' + NW[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
 
