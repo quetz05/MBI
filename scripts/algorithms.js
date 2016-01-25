@@ -7,12 +7,12 @@ $(document).ready(function () {
 
 
             for (var i = 0; i < analyzedObject.header.length; ++i) {
-                table += '<th>' + analyzedObject.header[i] + '</th>';
+                table += '<th>' + analyzedObject.header[i].name + '</th>';
             }
             table += '</thead><tbody>';
 
             for (var i = 0; i < analyzedObject.header.length; ++i) {
-                var currentRowName = analyzedObject.header[i];
+                var currentRowName = analyzedObject.header[i].name;
                 table += '<tr><td>' + currentRowName + '</td>';
 
                 for (var j = 0; j < analyzedObject.val.length; ++j) {
@@ -46,7 +46,23 @@ $(document).ready(function () {
             ['-', '-', '-']]
     }
 
-    algo.lePrinte(leTesteTabelke)
+    var lePrawdziweTabelke = {
+        header: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+        val: [
+            ['-', 19, 27, 8, 33, 18, 13],
+            ['-', '-', 31, 18, 36, 1, 13],
+            ['-', '-', '-', 26, 41, 32, 29],
+            ['-', '-', '-', '-', 31, 17, 14],
+            ['-', '-', '-', '-', '-', 35, 28],
+            ['-', '-', '-', '-', '-','-', 12],
+            ['-', '-', '-', '-', '-','-', '-']
+
+            ]
+    }
+    algo.lePrinte(lePrawdziweTabelke)
+
+
+    algo.lePrinte(treeBuilder.leStartDatDanceAndGetMeATree(lePrawdziweTabelke))
 
     function Tree(rootNode) {
         this._root = rootNode;

@@ -30,9 +30,10 @@ var treeBuilder = {
 
         var y = this._doTheMagic(x);
         var z = this._doTheMagic(y);
-        var v = this._doTheMagic(z);
-        var a = this._doTheMagic(v);
-        return a;
+        //var v = this._doTheMagic(z);
+        //var a = this._doTheMagic(v);
+        console.log(this._permute.getPermutations([0,3,1,5], 2))
+        return z;
 
     },
     _doTheMagic: function (parsedArray) {
@@ -56,8 +57,14 @@ var treeBuilder = {
             if (i === lower) {
                 columnName = {
                     name: analyzed.header[lower].name + analyzed.header[higher].name,
-                    prevIndexes: analyzed.header[lower].prevIndexes.concat([lower, higher]).concat(analyzed.header[higher].prevIndexes)
+                    prevIndexes: analyzed.header[lower].prevIndexes.concat(analyzed.header[higher].prevIndexes) // Dodajemy poprzednie indeksy - składowe
                 };
+
+                //sprawdzamy, czy składowe nowego tworu były proste czy też złożone z kilku
+                if( analyzed.header[lower].prevIndexes.length === 0)
+                    columnName.prevIndexes.push(lower);
+                if( analyzed.header[higher].prevIndexes.length === 0)
+                    columnName.prevIndexes.push(higher);
 
             } else if (i === higher) {
                 continue;
@@ -86,8 +93,10 @@ var treeBuilder = {
                 // Początek magii kolejnego kroku:
 
                 if (i !== lower && j === lower) {
+
                     newArray.val[i][j] = (analyzed.val[i][lower] + analyzed.val[i][higher]) / 2
-                } else if (i !== lower && j !== lower) {
+                } else
+                if (i !== lower && j !== lower) {
                     var originalIdentifierIndexOfFirstCrossing = analyzed.header.indexOf(newArray.header[j]);
                     var originalIdentifierIndexOfSecondCrossing = analyzed.header.indexOf(newArray.header[i]);
                     newArray.val[i][j] = analyzed.val[originalIdentifierIndexOfSecondCrossing][originalIdentifierIndexOfFirstCrossing];
@@ -104,8 +113,8 @@ var treeBuilder = {
 
             }
         }
-        console.log(newArray)
-        console.log(this.getSmallestArrayElem(newArray))
+        //console.log(newArray)
+        //console.log(this.getSmallestArrayElem(newArray))
         return newArray;
     },
     _parseInitialArray: function (initialArray) {
@@ -122,5 +131,50 @@ var treeBuilder = {
         console.log(parsed)
         return parsed;
 
-    }
+    },_permute :  (function() {
+    // http://jsfiddle.net/jinwolf/Ek4N5/29/
+        var results = [];
+
+        function doPermute(input, output, used, size, level) {
+
+            if (size == level) {
+                var word = output.slice();
+                results.push(word);
+                return;
+            }
+
+            level++;
+
+            for (var i = 0; i < input.length; i++) {
+
+                if (used[i] === true) {
+                    continue;
+                }
+
+                used[i] = true;
+
+                output.push(input[i]);
+
+                doPermute(input, output, used, size, level);
+
+                used[i] = false;
+
+                output.pop();
+            }
+        }
+
+        return {
+            getPermutations: function(input, size) {
+
+                var chars = input;
+                var output = [];
+                var used = new Array(chars.length);
+
+                doPermute(chars, output, used, size, 0);
+
+                return results;
+            }
+        }
+    })()
+
 }
