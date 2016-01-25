@@ -1,3 +1,10 @@
+// funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
+function DrawSequenceDistanceMatrix()
+{
+    var matrix = CreateSequenceDistanceMatrix();
+    DrawMatrix(matrix, 'sequenceDistanceMatrix');
+}
+
 // funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
 function CreateSequenceDistanceMatrix()
 {
@@ -19,7 +26,10 @@ function CreateSequenceDistanceMatrix()
         for(var j = 0; j < matrixSize; j++)
         {
             if((j-i) > 0)
-                matrix.val[i][j] =  13;
+            {
+                matrix.val[i][j] = computeDistance($('#input' + (i+1).toString()).val(), $('#input' + (j+1).toString()).val());
+            }
+
             else
                 matrix.val[i][j] =  '-';
         }
@@ -27,16 +37,36 @@ function CreateSequenceDistanceMatrix()
     }
 
     return matrix;
-
 }
 
-// funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
-function DrawSequenceDistanceMatrix()
+function computeDistance(seq1, seq2)
 {
-    var matrix = CreateSequenceDistanceMatrix();
-    DrawMatrix(matrix, 'sequenceDistanceMatrix');
+    seq1 = seq1.toString();
+    seq2 = seq2.toString();
+    if(seq1.length != seq2.length)
+        return 'ERROR!';
+
+    var sameDistance = 1;
+    var otherDistance = 0;
+    var lineDistance = 0;
+
+    var distance = 0;
+
+
+    for(var i = 0; i < seq1.length; i++)
+    {
+        if(seq1.charAt(i) == '-' || seq2.charAt(i) == '-')
+            distance += lineDistance;
+        else if(seq1.charAt(i) == seq2.charAt(i))
+            distance += sameDistance;
+        else
+            distance += otherDistance;
+    }
+
+    return distance;
 }
 
+// funkcja rysuj¹ca macierz (w postaci tabeli) i wstawiaj¹ca j¹ na stronê
 function DrawMatrix(matrix, id)
 {
     // Wypisanie tabelki
