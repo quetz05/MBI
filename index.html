@@ -33,13 +33,14 @@
 	<div class="section">
 	<div class="container">
 	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami)</h3>
-		<h2><button class="btn btn-primary" style="" onclick="DrawSequenceDistanceMatrix()">Twórz macierz odległości</button></h2>
+		<div style="text-align: center;">
+			<div class="col-md-4 col-sm-4">Wartość za ten sam znak: <input class="form-control" id="sameDistance" style="width:80px; margin: auto;" value="1"/></div>
+			<div class="col-md-4 col-sm-4">Wartość za różny znak: <input class="form-control" id="otherDistance" style="width:80px; margin: auto;" value="0"/></div>
+			<div class="col-md-4 col-sm-4">Wartość za przerwę: <input class="form-control" id="lineDistance" style="width:80px; margin: auto;" value="0"/></div>
+			<div class="clear"></div>
+			<button class="btn btn-primary" style="margin:15px;" onclick="DrawSequenceDistanceMatrix()">Twórz macierz odległości</button>
+		</div>
 		<div id="sequenceDistanceMatrix"></div>
-		<ol>
-		<li>?? Modyfikacje sekwencji początkowych</li>
-		<li>Liczenie SP, im mniejsze tym lepsze (wybrana funkcja) -> wybór najmniejszego</li>
-		<li>Obliczenie macierzy odległości na podstawie odległości Levensteina</li>		
-		</ol>
 	<!-- END: TO ZROBI QUETZU  -->
 	</div>	
 	</div>	

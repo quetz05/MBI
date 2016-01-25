@@ -26,9 +26,7 @@ function CreateSequenceDistanceMatrix()
         for(var j = 0; j < matrixSize; j++)
         {
             if((j-i) > 0)
-            {
                 matrix.val[i][j] = computeDistance($('#input' + (i+1).toString()).val(), $('#input' + (j+1).toString()).val());
-            }
 
             else
                 matrix.val[i][j] =  '-';
@@ -46,9 +44,9 @@ function computeDistance(seq1, seq2)
     if(seq1.length != seq2.length)
         return 'ERROR!';
 
-    var sameDistance = 1;
-    var otherDistance = 0;
-    var lineDistance = 0;
+    var sameDistance = parseInt($('#sameDistance').val());
+    var otherDistance = parseInt($('#otherDistance').val());
+    var lineDistance = parseInt($('#lineDistance').val());
 
     var distance = 0;
 
