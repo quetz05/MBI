@@ -1,7 +1,7 @@
 var treeBuilder = {
     _initialArray: [],
-
-    getSmallestArrayElem: function (analyzedArray) {
+    _tree : new Tree(new MBINode("ROOT")),
+    _getSmallestArrayElem: function (analyzedArray) {
         var smallest = {
             x: 1,
             y: 0,
@@ -26,22 +26,24 @@ var treeBuilder = {
     },
     leStartDatDanceAndGetMeATree: function (initArray) {
         this._initialParsedArray = this._parseInitialArray(initArray);
-        var x = this._doTheMagic(this._initialParsedArray);
 
-        var y = this._doTheMagic(x);
-        var z = this._doTheMagic(y);
-        var v = this._doTheMagic(z);
-        var a = this._doTheMagic(v);
-        return a;
+        var arrayToProcess = this._initialParsedArray;
+
+        while (arrayToProcess.header.length > 2) {
+            arrayToProcess = this._doTheMagic(arrayToProcess);
+        }
+        return arrayToProcess;
 
     },
     _doTheMagic: function (parsedArray) {
         var analyzed = parsedArray;
 
-        var smallest = this.getSmallestArrayElem(analyzed);
-        console.log(smallest);
+        var smallest = this._getSmallestArrayElem(analyzed);
+
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
+
+        var aaa = analyzed.header[lower].name
 
 
         /// NAGLOWEK NOWY - POCZATEK
@@ -107,30 +109,11 @@ var treeBuilder = {
                 var finalValsToSum = this._getValuesInRange(pointsToCalculation, newArray.header[i].prevIndexes, newArray.header[j].prevIndexes);
 
                 var counter = 0;
-                for(var it = 0; it < finalValsToSum.length; ++ it){
+                for (var it = 0; it < finalValsToSum.length; ++it) {
                     counter += this._initialParsedArray.val[finalValsToSum[it][1]][finalValsToSum[it][0]]
                 }
 
                 newArray.val[i][j] = counter / finalValsToSum.length;
-                var xxx = 'asd';
-                //if (i !== lower && j === lower) {
-                //    newArray.val[i][j] = (analyzed.val[i][lower] + analyzed.val[i][higher]) / 2
-                //} else
-                //if (i !== lower && j !== lower) {
-                //    var originalIdentifierIndexOfFirstCrossing = analyzed.header.indexOf(newArray.header[j]);
-                //    var originalIdentifierIndexOfSecondCrossing = analyzed.header.indexOf(newArray.header[i]);
-                //    newArray.val[i][j] = analyzed.val[originalIdentifierIndexOfSecondCrossing][originalIdentifierIndexOfFirstCrossing];
-                //
-                //} else if (i === lower) {
-                //    var originalIdentifierIndexOfFirstCrossing = analyzed.header.indexOf(newArray.header[j]);
-                //
-                //    if (originalIdentifierIndexOfFirstCrossing < higher)
-                //        newArray.val[i][j] = (analyzed.val[i][originalIdentifierIndexOfFirstCrossing] + analyzed.val[originalIdentifierIndexOfFirstCrossing][higher]) / 2
-                //    else
-                //        newArray.val[i][j] = (analyzed.val[i][originalIdentifierIndexOfFirstCrossing] + analyzed.val[higher][originalIdentifierIndexOfFirstCrossing]) / 2
-                //
-                //}
-
             }
         }
 
@@ -147,10 +130,10 @@ var treeBuilder = {
         for (var i = 0; i < initialArray.header.length; ++i) {
             parsed.header.push({name: initialArray.header[i], prevIndexes: []})
         }
-        console.log(parsed)
-        return parsed;
 
-    }, _permute: (function () {
+        return parsed;
+    },
+    _permute: (function () {
         // http://jsfiddle.net/jinwolf/Ek4N5/29/
         var results = [];
 
@@ -197,7 +180,7 @@ var treeBuilder = {
         }
     })(),
     _isDatInLowerHalf: function (x, y) {
-
+        // Sprawdzenie czy podany punk znadjuej sie pod przekatna
         if (y <= x) return true;
         else return false;
 
@@ -214,12 +197,13 @@ var treeBuilder = {
         var ret = [];
         for (var i = 0; i < values.length; ++i) {
             var arr = values[i];
-            if (!this._arrayContainsElems(rowPermutations, arr[0], arr[1]) && !this._arrayContainsElems(colPermutations, arr[0], arr[1]))
+            if (!this._arrayContainsElem(rowPermutations, arr[0], arr[1]) && !this._arrayContainsElem(colPermutations, arr[0], arr[1]))
                 ret.push(arr)
         }
         return ret;
     },
-    _checkIfUpper : function(array){
+    _checkIfUpper: function (array) {
+        // Sprawda ktore punkty tablicy znaduja sie pod przekatna i zwraca tablice tylko punktow nad przekatna
         var ret = [];
         for (var i = 0; i < array.length; ++i) {
             var arr = array[i];
@@ -228,24 +212,12 @@ var treeBuilder = {
         }
         return ret;
     },
-    _arrayEqual: function (a, b) {
-        if (a === b) return true;
-        if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
-
-        // If you don't care about the order of the elements inside
-        // the array, you should sort both arrays here.
-
-        for (var i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
-        }
-        return true;
-    },_arrayContainsElems : function(array, x, y){
+    _arrayContainsElem: function (array, x, y) {
 
         for (var i = 0; i < array.length; ++i) {
             if ((array[i][0] === x && array[i][1] === y) ||
                 (array[i][1] === x && array[i][0] === y)
-            ){
+            ) {
                 return true;
             }
 
@@ -253,6 +225,4 @@ var treeBuilder = {
         return false;
 
     }
-
-
 }
