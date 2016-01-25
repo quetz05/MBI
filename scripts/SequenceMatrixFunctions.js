@@ -16,19 +16,28 @@ function createMultipleSequenceAlignments()
         return false;
     }
 
-    // Wyliczenie sekwencji
     var firstNeedleman = NeedlemanWunsch($('#input1').val(), $('#input2').val());
-    var inputs = '<input type="text" value="' + firstNeedleman[0]  + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
-    inputs += '<input type="text" value="' + firstNeedleman[1]  + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
+
+    alert(firstNeedleman + ': ' + firstNeedleman[0] + ' ' + firstNeedleman[1]);
+
+    var inputs = '';
+    inputs += '<input type="text" value="' + firstNeedleman[0]  + '" class="form-control" id="alignInput1" style="margin:8px;" placeholder="Wyrównana sekwencja 1" />';
+    inputs += '<input type="text" value="' + firstNeedleman[1]  + '" class="form-control" id="alignInput2" style="margin:8px;" placeholder="Wyrównana sekwencja 2" />';
 
     for(var i=3; i <= inputNo; i++)
     {
-            inputs += '<input type="text" value="' + $('#input' + i.toString()).val() + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + i.toString() + '" />';
+        inputs += '<input type="text" value="' + NeedlemanWunsch($('#input' + (i-1).toString()).val(), $('#input' + i.toString()).val())[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+
 
     }
 
-
     $('#alignmentsSequences').html(inputs.toString());
+}
+
+function multipleSequenceAlignments()
+{
+
+
 }
 
 // funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
@@ -38,8 +47,7 @@ function CreateSequenceDistanceMatrix()
     var matrixSize = $('#inputNo').val();
 
     //tworzenie struktury macierzy
-    var matrix =
-    {
+    var matrix = {
         header: [matrixSize],
         val: []
     }
@@ -62,31 +70,6 @@ function CreateSequenceDistanceMatrix()
     }
 
     return matrix;
-}
-
-// funkcja rysuj¹ca macierz (w postaci tabeli) i wstawiaj¹ca j¹ na stronê
-function DrawMatrix(matrix, id)
-{
-    // Wypisanie tabelki
-    var table = '<table class="table table-bordered" align="center"><thead><th></th>';
-
-    for (var i = 0; i < matrix.header.length; ++i) {
-        table += '<th>' + matrix.header[i] + '</th>';
-    }
-    table += '</thead><tbody>';
-
-    for (var i = 0; i < matrix.header.length; ++i)
-    {
-        var currentRowName = matrix.header[i];
-        table += '<tr><td>' + currentRowName + '</td>';
-        for (var j = 0; j < matrix.val.length; ++j)
-        {
-            table += '<td>' + matrix.val[i][j] + '</td>';
-        }
-        table += '</tr>'
-    }
-    table += '</tbody></table>';
-    $('#sequenceDistanceMatrix').html(table);
 }
 
 function computeDistance(seq1, seq2)
@@ -116,8 +99,36 @@ function computeDistance(seq1, seq2)
     return distance;
 }
 
+// funkcja rysuj¹ca macierz (w postaci tabeli) i wstawiaj¹ca j¹ na stronê
+function DrawMatrix(matrix, id)
+{
+    // Wypisanie tabelki
+    var table = '<table class="table table-bordered" align="center"><thead><th></th>';
+
+    for (var i = 0; i < matrix.header.length; ++i) {
+        table += '<th>' + matrix.header[i] + '</th>';
+    }
+    table += '</thead><tbody>';
+
+    for (var i = 0; i < matrix.header.length; ++i)
+    {
+        var currentRowName = matrix.header[i];
+        table += '<tr><td>' + currentRowName + '</td>';
+        for (var j = 0; j < matrix.val.length; ++j)
+        {
+            table += '<td>' + matrix.val[i][j] + '</td>';
+        }
+        table += '</tr>'
+    }
+    table += '</tbody></table>';
+    $('#sequenceDistanceMatrix').html(table);
+}
+
 function NeedlemanWunsch(seq1, seq2)
 {
+    seq1 = seq1.toString();
+    seq2 = seq2.toString();
+
     var sameDistance = parseInt($('#sameDistance').val());
     var otherDistance = parseInt($('#otherDistance').val());
 
