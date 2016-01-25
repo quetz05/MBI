@@ -1,8 +1,32 @@
 // funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
 function DrawSequenceDistanceMatrix()
 {
+    if(createMultipleSequenceAlignments() == false)
+        return;
     var matrix = CreateSequenceDistanceMatrix();
     DrawMatrix(matrix, 'sequenceDistanceMatrix');
+}
+
+function createMultipleSequenceAlignments()
+{
+    var inputNo = $('#inputNo').val();
+    if(inputNo <= 0)
+    {
+        $('#alignmentsSequences').html("<span style='color:red;'>Brak sekwencji!</span>");
+        return false;
+    }
+
+    var inputs = '';
+    for(var i=1; i <= inputNo; i++)
+        inputs += '<input type="text" value="' + $('#input' + i.toString()).val() + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+
+    $('#alignmentsSequences').html(inputs.toString());
+}
+
+function multipleSequenceAlignments()
+{
+
+
 }
 
 // funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
@@ -68,7 +92,7 @@ function computeDistance(seq1, seq2)
 function DrawMatrix(matrix, id)
 {
     // Wypisanie tabelki
-    var table = '<table class="table table-bordered "><thead><th></th>';
+    var table = '<table class="table table-bordered" align="center"><thead><th></th>';
 
     for (var i = 0; i < matrix.header.length; ++i) {
         table += '<th>' + matrix.header[i] + '</th>';
