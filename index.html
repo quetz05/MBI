@@ -24,8 +24,7 @@
 	<!-- BEGIN: TO ZROBI QUETZU  -->
 	<h3>Dane wejściowe</h3>
 		<label for="usr">Ile sekwencji chcesz wprowadzić?</label>
-		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="1" />
-		<button class="btn btn-primary" style="display:inline" onclick="createInputs()">OK</button>
+		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="0" onclick="createInputs()" />
 		<div class="form-group" id="inputs">
 		</div>
 	</div>	
@@ -33,7 +32,9 @@
 	
 	<div class="section">
 	<div class="container">
-	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami</h3>
+	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami)</h3>
+		<h2><button class="btn btn-primary" style="" onclick="DrawSequenceDistanceMatrix()">Twórz macierz odległości</button></h2>
+		<div id="sequenceDistanceMatrix"></div>
 		<ol>
 		<li>?? Modyfikacje sekwencji początkowych</li>
 		<li>Liczenie SP, im mniejsze tym lepsze (wybrana funkcja) -> wybór najmniejszego</li>
