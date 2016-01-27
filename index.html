@@ -25,12 +25,16 @@
 	<div class="container">
 	<!-- BEGIN: TO ZROBI QUETZU  -->
 	<h3>Dane wejściowe</h3>
-		<label for="usr">Ile sekwencji chcesz wprowadzić?</label>
+		<label>Ile sekwencji chcesz wprowadzić?</label>
 		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="3" onclick="createInputs()" />
+		<button class="btn btn-default" style="margin:15px;" onclick="generateDefaultData()">Użyj danych przykładowych</button>
 		<div class="form-group" id="inputs">
 		</div>
-		<center><button class="btn btn-primary" style="margin:15px;" onclick="nextStep(1);DrawSequenceDistanceMatrix();">Twórz macierz odległości</button></center>
 		<div id="selectionInfo"></div>
+		<center>
+			<button class="btn btn-primary" style="margin:15px;" onclick="DrawSequenceDistanceMatrix();">Twórz macierz odległości</button>
+		</center>
+
 	</div>
 	</div>
 	
@@ -39,10 +43,10 @@
 	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami)</h3>
 		<div style="text-align: center;">
 			<div style="display: block;padding:20px;">
-				<div class="row">
-				<div class="col-md-4 col-sm-4">Wartość za ten sam znak: <input class="form-control" id="sameDistance" style="width:80px; margin: auto;" value="1"/></div>
-				<div class="col-md-4 col-sm-4">Wartość za różny znak: <input class="form-control" id="otherDistance" style="width:80px; margin: auto;" value="-1"/></div>
-				<div class="col-md-4 col-sm-4">Wartość za przerwę: <input class="form-control" id="lineDistance" style="width:80px; margin: auto;" value="0"/></div>
+				<div class="row" style="text-align: center;">
+					<div class="col-md-4 col-sm-4">Punkt za ten sam znak: <input class="form-control centered" id="sameDistance" style="width:80px; margin: auto;" value="2"/></div>
+					<div class="col-md-4 col-sm-4">Kara za różny znak: <input class="form-control centered" id="otherDistance" style="width:80px; margin: auto;" value="-3"/></div>
+					<div class="col-md-4 col-sm-4"><button class="btn btn-info" style="margin:15px;" onclick="DrawSequenceDistanceMatrix();">Przelicz ponownie</button></div>
 				<div class="clear"></div>
 				</div>
 			</div>

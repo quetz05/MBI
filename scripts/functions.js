@@ -1,4 +1,4 @@
-// Metoda tworząca inputy na wejście - zależnie od ilości wybranej przez użytkownika
+// funkcja tworząca inputy na wejście - zależnie od ilości wybranej przez użytkownika
 function createInputs()
 {
 	var inputNo = $('#inputNo').val();
@@ -13,6 +13,18 @@ function createInputs()
 		inputs += '<input type="text" class="form-control" id="input' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';	
 		
 	$('#inputs').html(inputs.toString());
+}
+
+// funkcja generująca przykładowe sekwencje
+function generateDefaultData()
+{
+	$('#inputNo').val(4);
+	createInputs();
+	$('#input1').val('CGTCTCCTGACCCCAGAGCAGGTCGTGG');
+	$('#input2').val('TCCAGCGCCTGCTTCCCGTGCTGTGCCAAC');
+	$('#input3').val('CGGCGGAAAACAGGCTTTGGAAACGGTG');
+	$('#input4').val('GATTGCTGCCGGTGCTGTGCCAAGCGCAC');
+
 }
 
 
