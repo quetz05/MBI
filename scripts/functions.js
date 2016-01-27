@@ -7,11 +7,11 @@ function createInputs()
 		$('#inputs').html("<span style='color:red;'>Wybierz liczbę większą od 1</span>");
 		return;
 	}
-	
+
 	var inputs = '';
 	for(var i=1; i <= inputNo; i++)
-		inputs += '<input type="text" class="form-control" id="input' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';	
-		
+		inputs += '<input type="text" class="form-control" id="input' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+
 	$('#inputs').html(inputs.toString());
 }
 

@@ -1,3 +1,5 @@
+
+
 // funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
 function DrawSequenceDistanceMatrix()
 {
@@ -6,6 +8,7 @@ function DrawSequenceDistanceMatrix()
     for(var i = 1; i <= matrixSize; i++)
         if($('#input' + i.toString()).val() == '')
         {
+            clearContent();
             $('#selectionInfo').html('<span style="color:red;">Przynajmniej jedna sekwencja jest pusta!</span>');
             return;
         }
