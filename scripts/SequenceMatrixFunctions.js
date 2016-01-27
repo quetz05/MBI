@@ -1,5 +1,3 @@
-
-
 // funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
 function DrawSequenceDistanceMatrix()
 {
@@ -30,7 +28,7 @@ function CreateSequenceDistanceMatrix()
     {
         header: [matrixSize],
         val: []
-    }
+    };
 
     for(var i=0; i < matrixSize; i++)
     {
@@ -48,6 +46,7 @@ function CreateSequenceDistanceMatrix()
         }
 
     }
+    SEQUENCE_MATRIX = matrix;
     return matrix;
 }
 
