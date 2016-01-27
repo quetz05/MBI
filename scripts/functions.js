@@ -15,3 +15,29 @@ function createInputs()
 	$('#inputs').html(inputs.toString());
 }
 
+
+function nextStep(step)
+{
+	switch(step)
+	{
+		case 1: visible('sequenceMatrix', true); break;
+		case 2: visible('createTree', true); break;
+		case 3: visible('createProfiles', true); break;
+
+	}
+}
+
+function visible(id, isVisible)
+{
+	if(isVisible == true)
+		$('#' + id).css('visibility', 'visible');
+	else
+		$('#' + id).css('visibility', 'hidden');
+}
+
+function clearContent()
+{
+	visible('sequenceMatrix', false);
+	visible('createTree', false);
+	visible('createProfiles', false);
+}

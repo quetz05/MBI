@@ -12,39 +12,35 @@ function createMultipleSequenceAlignments()
     var inputNo = $('#inputNo').val();
     if(inputNo < 2)
     {
-        $('#alignmentsSequences').html("<span style='color:red;'>Brak przynajmniej dwóch sekwencji!</span>");
+        $('#selectionInfo').html("<span style='color:red;'>Brak przynajmniej dwóch sekwencji!</span>");
         return false;
     }
 
-    var values = [inputNo];
-    var firstNeedleman = NeedlemanWunsch($('#input1').val(), $('#input2').val());
-    values[0] = firstNeedleman[0];
-    values[1] = firstNeedleman[1];
-
-    for(var i=2; i < inputNo; i++)
-    {
-        var NW = NeedlemanWunsch(values[i-1], $('#input' + (i+1).toString()).val());
-        values[i-1] = NW[0];
-        values[i] = NW[1];
+    //var values = [inputNo];
+    //var firstNeedleman = NeedlemanWunsch($('#input1').val(), $('#input2').val());
+    //values[0] = firstNeedleman[0];
+    //values[1] = firstNeedleman[1];
+    //
+    //for(var i=2; i < inputNo; i++)
+    //{
+        //var NW = NeedlemanWunsch(values[i-1], $('#input' + (i+1).toString()).val());
+        //values[i-1] = NW[0];
+        //values[i] = NW[1];
         //alert(NW);
         //inputs += '<input type="text" value="' + NW[1] + '" class="form-control" id="alignInput' + i.toString() + '" style="margin:8px;" placeholder="Sekwencja ' + i.toString() + '" />';
+    //
+    //
+    //}
 
+    //var inputs = '';
+    //for(var i = 0; i < values.length; i++)
+    //{
+    //    inputs += '<input type="text" value="' + values[i]  + '" class="form-control" id="alignInput' + (i+1).toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + (i+1).toString() + '" />';
+    //}
+    //
+    //$('#alignmentsSequences').html(inputs.toString());
 
-    }
-
-    var inputs = '';
-    for(var i = 0; i < values.length; i++)
-    {
-        inputs += '<input type="text" value="' + values[i]  + '" class="form-control" id="alignInput' + (i+1).toString() + '" style="margin:8px;" placeholder="Wyrównana sekwencja ' + (i+1).toString() + '" />';
-    }
-
-    $('#alignmentsSequences').html(inputs.toString());
-}
-
-function multipleSequenceAlignments()
-{
-
-
+    return true;
 }
 
 // funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
@@ -68,7 +64,7 @@ function CreateSequenceDistanceMatrix()
         for(var j = 0; j < matrixSize; j++)
         {
             if((j-i) > 0)
-                matrix.val[i][j] = computeDistance($('#alignInput' + (i+1).toString()).val(), $('#alignInput' + (j+1).toString()).val());
+                matrix.val[i][j] = 'x'//computeDistance($('#alignInput' + (i+1).toString()).val(), $('#alignInput' + (j+1).toString()).val());
 
             else
                 matrix.val[i][j] =  '-';
