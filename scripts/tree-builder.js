@@ -1,7 +1,26 @@
 var treeBuilder = {
     _initialArray: [],
+    _initialParsedArray: null,
     _tree: new Tree(new MBINode("ROOT")),
-    _finalArray : [],
+    _finalArray: [],
+    _stepCells: [],
+    _prevStepArray: [],
+    _prevSmallest: {},
+    _stepNum: 0,
+    lePrawdziweTabelke: {
+        header: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+        val: [
+            ['-', 19, 27, 8, 33, 18, 13],
+            ['-', '-', 31, 18, 36, 1, 13],
+            ['-', '-', '-', 26, 41, 32, 29],
+            ['-', '-', '-', '-', 31, 17, 14],
+            ['-', '-', '-', '-', '-', 35, 28],
+            ['-', '-', '-', '-', '-', '-', 12],
+            ['-', '-', '-', '-', '-', '-', '-']
+
+        ]
+    },
+
     _getSmallestArrayElem: function (analyzedArray) {
         var smallest = {
             x: 1,
@@ -25,8 +44,10 @@ var treeBuilder = {
 
         return smallest;
     },
-    buildTree: function (initArray) {
-        this._initialParsedArray = this._parseInitialArray(initArray);
+    buildTree: function () {
+        this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
+        $('#treeAll').prop('disabled', true);
+        $('#treeNextStep').prop('disabled', true);
 
         var arrayToProcess = this._initialParsedArray;
 
@@ -36,17 +57,155 @@ var treeBuilder = {
         this._addToTree(arrayToProcess);
 
         this._finalArray = arrayToProcess;
+        $('<div style="color:green;"><strong></strong></div>').appendTo('#jarkowaEnklawa div')
+
+        this._drawTree();
+
         return this._tree;
 
+    }, buildTreeBySteps: function () {
+        if (this._initialParsedArray === null) {
+            this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
+            this._prevStepArray = this._initialParsedArray;
+            $('#treeAll').prop('disabled', true);
+
+        }
+        //namazianie
+        //this._lePrinte(this._initialParsedArray);
+        $('<div id="krok-'+ this._stepNum+ '" style="color:green;"><h2>Krok #' + (this._stepNum + 1 ) + '</h2></div>').appendTo('#jarkowaEnklawa')
+
+        $('<h3>Tablica z poprzedniego kroku</h3>').appendTo('#jarkowaEnklawa')
+
+        this._lePrinte(this._prevStepArray, "prev");
+        $('<h3>Tablica pierwotna</h3>').appendTo('#jarkowaEnklawa')
+
+
+        this._lePrinte(this._initialParsedArray, "init");
+
+        var processedArray = this._processArray(this._prevStepArray);
+
+        $('<h3>Wynik tego kroku</h3>').appendTo('#jarkowaEnklawa')
+        this._lePrinte(processedArray, "curr");
+
+
+        var colors = ["red", "green", "cyan", "gray", "white", "brown", "orange", "purple"];
+
+        var prevSmallestCell = $('#prev-' + this._stepNum + 'x' + this._prevSmallest.x + '-' + this._prevSmallest.y);
+        prevSmallestCell.css("background", "yellow");
+        $('<p>Najmniejszy element: <strong style="color:yellow;">' + prevSmallestCell.html() + '</strong></p>').appendTo('#desc-prev' + this._stepNum)
+
+
+        for (var i = 0; i < this._stepCells.length; ++i) {
+            var current = this._stepCells[i];
+            var color = "red";
+
+            $('#curr-' + this._stepNum + 'x' + current.y + '-' + current.x).css("border", "5px solid " + colors[i]);
+            var vals = "(";
+
+            for (var j = 0; j < current.steps.length; ++j) {
+                var partialStep = current.steps[j];
+                var valCell = $('#init-' + this._stepNum + 'x' + partialStep[0] + '-' + partialStep[1]);
+
+                vals +=valCell.html().toString();
+
+                vals += (j === current.steps.length -1 )? ')' :" + ";
+                valCell.css("background", colors[i]);
+
+            }
+            $('<p><strong style="color:'+ colors[i] +';">' + vals + '/' + current.steps.length + ' = ' +
+                $('#curr-' + this._stepNum + 'x' + current.y + '-' + current.x).html() +
+                '</strong></p>').appendTo('#desc-curr' + this._stepNum)
+
+        }
+
+
+        this._stepNum++;
+        this._prevStepArray = processedArray;
+
+        //przeniesienie guzika pod ostatni krok
+        $('#treeNextStep').insertAfter('#step-curr'+ (this._stepNum - 1 ))
+
+        $('html, body').animate({
+            scrollTop: $('#krok-' + (this._stepNum - 1 )).offset().top
+        }, 1500);
+
+        if(processedArray.header.length === 2){
+            $('#treeNextStep').remove();
+            $('<div style="color:green;"><strong>Drzewo UPGMA zbudowane</strong></div>').appendTo('#jarkowaEnklawa')
+            this._finalArray = processedArray;
+
+            this._addToTree(processedArray);
+            this._drawTree()
+        }
+
+
+    }, _lePrinte: function (analyzedObject, type) {
+        var table = '<div id="step-'+ type + this._stepNum+'" class="row"><div class="col-md-6"><table class="table table-bordered "><thead><th></th>';
+
+
+        for (var i = 0; i < analyzedObject.header.length; ++i) {
+            table += '<th>' + analyzedObject.header[i].name + '</th>';
+        }
+        table += '</thead><tbody>';
+
+        for (var i = 0; i < analyzedObject.header.length; ++i) {
+            var currentRowName = analyzedObject.header[i].name;
+            table += '<tr><td>' + currentRowName + '</td>';
+
+            for (var j = 0; j < analyzedObject.val.length; ++j) {
+
+                table += '<td id="' + type + '-' + this._stepNum + 'x' + j + '-' + i + '">' + analyzedObject.val[i][j] + '</td>';
+            }
+            table += '</tr>'
+
+        }
+        table += '</tbody></table></div><div id="desc-'+ type + + this._stepNum + '" class="col-md-6"></div></div>';
+        $(table).appendTo('#jarkowaEnklawa')
     },
-    _getFinalArray : function(){
+    _buildGraphVizData: function (node, parentId, nodes, edges) {
+
+        for (var i = 0; i < node.children.length; ++i) {
+            var current = node.children[i];
+
+            var newId = nodes.length + 1;
+            nodes.push({
+                id: newId,
+                label: current.name
+            })
+
+            edges.push({
+                from: parentId, to: newId, label: current.parentDist,
+            })
+
+            this._buildGraphVizData(current, newId, nodes, edges);
+        }
+
+    },
+    _drawTree: function(){
+        var nodes = [];
+        var edges = [];
+
+        this._buildGraphVizData(this._tree._root.children[0], 0, nodes, edges);
+        $('<div id="graf"></div>').appendTo('#jarkowaEnklawa')
+        var container = document.getElementById('graf');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {};
+        var network = new vis.Network(container, data, options);
+    },
+    _getFinalArray: function () {
         return this._finalArray;
     },
     _processArray: function (parsedArray) {
+        // wyczyść pola do wizualizacji
+        this._stepCells = []
+
         var analyzed = parsedArray;
 
         var smallest = this._getSmallestArrayElem(parsedArray);
-
+        this._prevSmallest = smallest;
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
 
@@ -117,12 +276,24 @@ var treeBuilder = {
 
                 var finalValsToSum = this._getValuesInRange(pointsToCalculation, newArray.header[i].prevIndexes, newArray.header[j].prevIndexes);
 
+
+                if (finalValsToSum.length > 1) {
+                    var stepData = {
+                        x: i,
+                        y: j,
+                        steps: finalValsToSum
+                    };
+                    this._stepCells.push(stepData);
+
+                }
+
+
                 var counter = 0;
                 for (var it = 0; it < finalValsToSum.length; ++it) {
                     counter += this._initialParsedArray.val[finalValsToSum[it][1]][finalValsToSum[it][0]]
                 }
 
-                newArray.val[i][j] = counter / finalValsToSum.length;
+                newArray.val[i][j] = +(Math.round((counter / finalValsToSum.length) + "e+2") + "e-2"); //.toFixed(2);
             }
         }
 
@@ -240,7 +411,7 @@ var treeBuilder = {
         return false;
 
     },
-    _addToTree: function(array){
+    _addToTree: function (array) {
         var smallest = this._getSmallestArrayElem(array);
 
         var lower = Math.min(smallest.x, smallest.y);

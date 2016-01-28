@@ -4,15 +4,17 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.12.0/vis.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<script src="scripts/jquery.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
+	<script src="scripts/model/globals.js"></script>
 	<script src="scripts/functions.js"></script>
 	<script src="scripts/SequenceMatrixFunctions.js"></script>
 	<script src="scripts/model/Node.js"></script>
 	<script src="scripts/model/Tree.js"></script>
 	<script src="scripts/tree-builder.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.12.0/vis.min.js"></script>
 </head>
 <body onload="createInputs()">
 <div class="container">
@@ -38,7 +40,7 @@
 
 	</div>
 	</div>
-	
+
 	<div class="section" id="sequenceMatrix" style="visibility: hidden;">
 	<div class="container">
 	<h3>Tworzenie macierzy odległości (porównywanie sekwencji parami)</h3>
@@ -62,13 +64,25 @@
 	<div class="section" id="createTree" style="visibility: hidden;">
 	<div class="container">
 	<h3>Obliczanie drzewa naprowadzającego</h3>
-	<div id="jarkowaEnklawa"></div>
+	<div id="jarkowaEnklawa">
+		<div style="text-align: center;">
+		    <button id="treeAll" class="btn btn-primary" style="margin:15px;" onclick="treeBuilder.buildTree()">Oblicz drzewo naprowadzające</button>
+		    <button id="treeNextStep" class="btn btn-primary" style="margin:15px;" onclick="treeBuilder.buildTreeBySteps()">Wykonaj krok</button>
+        </div>
+	</div>
 
-		<center><button class="btn btn-primary" style="margin:15px;" onclick="nextStep(3);">Tworzenie profili i sekwencji konsensusowej</button></center>
 	<!-- END: TO ZROBI JAREK  -->
 	</div>
 	</div>
 	<!-- BEGIN: TO ZROBI QBSU  -->
+	<div class="section">
+	<div class="container">
+		<h3>Oddzielne przyrównanie najbliższych sekwencji (programowanie dynamiczne)</h3>
+
+	</div>
+	</div>
+
+	<div class="section">
 	<div class="section" id="createProfiles" style="visibility: hidden;">
 	<div class="container">
 	<h3>Tworzenie sekwencji konsensusowej - profil</h3>
@@ -78,5 +92,12 @@
 	</div>
 	<!-- END: TO ZROBI QBSU  -->
 
+	<div class="section">
+	<div class="container">
+	<h3>Wynik</h3>
+
+	</div>
+	</div>
+</div>
 </body>
 </html>
