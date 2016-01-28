@@ -44,8 +44,8 @@ var treeBuilder = {
 
         return smallest;
     },
-    buildTree: function (initArray) {
-        this._initialParsedArray = this._parseInitialArray(this.lePrawdziweTabelke);
+    buildTree: function () {
+        this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
         $('#treeAll').prop('disabled', true);
         $('#treeNextStep').prop('disabled', true);
 
@@ -65,7 +65,7 @@ var treeBuilder = {
 
     }, buildTreeBySteps: function () {
         if (this._initialParsedArray === null) {
-            this._initialParsedArray = this._parseInitialArray(this.lePrawdziweTabelke);
+            this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
             this._prevStepArray = this._initialParsedArray;
             $('#treeAll').prop('disabled', true);
 
