@@ -21,8 +21,8 @@ var treeBuilder = {
         ]
     },
 
-    _getSmallestArrayElem: function (analyzedArray) {
-        var smallest = {
+    _getBiggestArrayElem: function (analyzedArray) {
+        var biggest = {
             x: 1,
             y: 0,
             value: analyzedArray.val[0][1]
@@ -34,15 +34,15 @@ var treeBuilder = {
                 if (currentValue === '-')
                     continue;
 
-                if (currentValue < smallest.value) {
-                    smallest.y = i;
-                    smallest.x = j;
-                    smallest.value = currentValue;
+                if (currentValue > biggest.value) {
+                    biggest.y = i;
+                    biggest.x = j;
+                    biggest.value = currentValue;
                 }
             }
         }
 
-        return smallest;
+        return biggest;
     },
     buildTree: function () {
         this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
@@ -204,7 +204,7 @@ var treeBuilder = {
 
         var analyzed = parsedArray;
 
-        var smallest = this._getSmallestArrayElem(parsedArray);
+        var smallest = this._getBiggestArrayElem(parsedArray);
         this._prevSmallest = smallest;
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
@@ -412,7 +412,7 @@ var treeBuilder = {
 
     },
     _addToTree: function (array) {
-        var smallest = this._getSmallestArrayElem(array);
+        var smallest = this._getBiggestArrayElem(array);
 
         var lower = Math.min(smallest.x, smallest.y);
         var higher = Math.max(smallest.x, smallest.y);
