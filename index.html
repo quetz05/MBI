@@ -19,7 +19,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.12.0/vis.min.js"></script>
 </head>
 <body onload="createInputs()">
-<div class="container">
+<div id="start" class="container">
 	<div class="jumbotron" style="text-align:center; background: #fff;">
 		<h2>Badanie podobieństwa trzech lub więcej sekwencji metodą progresywną</h2>
 		<i>Autorzy: Domagała Bartosz, Kornata Jarosław, Wnuk Jakub</i>
@@ -28,7 +28,6 @@
 
 	<div class="section">
 	<div class="container">
-	<!-- BEGIN: TO ZROBI QUETZU  -->
 	<h3>Dane wejściowe</h3>
 		<label>Ile sekwencji chcesz wprowadzić?</label>
 		<input type="number" class="form-control" id="inputNo" style="width:120px;display:inline;" value="3" onclick="createInputs()" />
@@ -55,14 +54,12 @@
 				<div class="clear"></div>
 				</div>
 			</div>
-			<!--<div id="alignmentsSequences" style="text-align:center;"></div>-->
 			<div id="sequenceDistanceMatrix"></div>
 			<center><button class="btn btn-primary" style="margin:15px;" onclick="nextStep(2);">Twórz drzewo</button></center>
 		</div>
-	<!-- END: TO ZROBI QUETZU  -->
 	</div>
 	</div>
-	<!-- BEGIN: TO ZROBI JAREK  -->
+
 	<div class="section" id="createTree" style="visibility: hidden;">
 	<div class="container">
 	<h3>Obliczanie drzewa naprowadzającego</h3>
@@ -73,11 +70,10 @@
         </div>
 	</div>
 
-	<!-- END: TO ZROBI JAREK  -->
 	</div>
 	</div>
-	<!-- BEGIN: TO ZROBI QBSU  -->
-	<div class="section">
+
+	<div class="section" id="treeAnalize" style="visibility: hidden;">
 	<div class="container">
 		<h3>Oddzielne przyrównanie najbliższych sekwencji (programowanie dynamiczne)</h3>
 		<div id="part3">
@@ -90,22 +86,11 @@
 	</div>
 	</div>
 
-	<div class="section">
-	<div class="section" id="createProfiles" style="visibility: hidden;">
-	<div class="container">
-	<h3>Tworzenie sekwencji konsensusowej - profil</h3>
-
-
+	<div class="section" id="algorithmEnd" style="visibility: hidden; margin-top:15px;">
+		<div class="container">
+			<center><a href="#start"><button class="btn btn-danger" style="margin:15px;font-size:150%;" onclick="clearContent();">Zacznij od nowa</button></a></center>
+		</div>
 	</div>
-	</div>
-	<!-- END: TO ZROBI QBSU  -->
 
-	<div class="section">
-	<div class="container">
-	<h3>Wynik</h3>
-
-	</div>
-	</div>
-</div>
 </body>
 </html>

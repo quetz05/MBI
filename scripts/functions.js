@@ -35,7 +35,8 @@ function nextStep(step)
 		case 1: visible('sequenceMatrix', true); break;
 		case 2: visible('createTree', true); break;
 		case 3: visible('createProfiles', true); break;
-
+		case 4: visible('treeAnalize', true); break;
+		case 5: visible('algorithmEnd', true); break;
 	}
 }
 
@@ -52,4 +53,6 @@ function clearContent()
 	visible('sequenceMatrix', false);
 	visible('createTree', false);
 	visible('createProfiles', false);
+	visible('treeAnalize', false);
+	visible('algorithmEnd', false);
 }

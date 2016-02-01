@@ -194,6 +194,7 @@ var treeBuilder = {
         };
         var options = {};
         var network = new vis.Network(container, data, options);
+        nextStep(4);
     },
     _getFinalArray: function () {
         return this._finalArray;

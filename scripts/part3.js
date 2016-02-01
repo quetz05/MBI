@@ -199,5 +199,6 @@ var part3controller = {
     runPart3: function (tree) {
         this.calculateNode(tree._root.children[0]);
         this.displayLog();
+        nextStep(5);
     }
 };
