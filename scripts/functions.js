@@ -55,4 +55,5 @@ function clearContent()
 	visible('createProfiles', false);
 	visible('treeAnalize', false);
 	visible('algorithmEnd', false);
+	$(".vis-network").remove()
 }
