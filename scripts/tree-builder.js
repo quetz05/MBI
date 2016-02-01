@@ -1,12 +1,15 @@
 var treeBuilder = {
-    _initialArray: [],
-    _initialParsedArray: null,
-    _tree: new Tree(new MBINode("ROOT")),
-    _finalArray: [],
-    _stepCells: [],
-    _prevStepArray: [],
-    _prevSmallest: {},
-    _stepNum: 0,
+    _initialParsedArray : null,
+    _clearVals: function () {
+        this._initialArray = [];
+        this._initialParsedArray = null;
+        this._tree = new Tree(new MBINode("ROOT"));
+        this._finalArray = [];
+        this._stepCells = [];
+        this._prevStepArray = [];
+        this._prevSmallest = {};
+        this._stepNum = 0;
+    },
     lePrawdziweTabelke: {
         header: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
         val: [
@@ -20,7 +23,6 @@ var treeBuilder = {
 
         ]
     },
-
     _getBiggestArrayElem: function (analyzedArray) {
         var biggest = {
             x: 1,
@@ -45,6 +47,7 @@ var treeBuilder = {
         return biggest;
     },
     buildTree: function () {
+        this._clearVals();
         this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
         $('#treeAll').prop('disabled', true);
         $('#treeNextStep').prop('disabled', true);
@@ -65,6 +68,7 @@ var treeBuilder = {
 
     }, buildTreeBySteps: function () {
         if (this._initialParsedArray === null) {
+            this._clearVals();
             this._initialParsedArray = this._parseInitialArray(SEQUENCE_MATRIX);
             this._prevStepArray = this._initialParsedArray;
             $('#treeAll').prop('disabled', true);
@@ -185,7 +189,7 @@ var treeBuilder = {
         var nodes = [];
         var edges = [];
 
-        this._buildGraphVizData(this._tree._root.children[0], 0, nodes, edges);
+        this._buildGraphVizData(this._tree._root, 0, nodes, edges);
         $('<div id="graf"></div>').appendTo('#jarkowaEnklawa')
         var container = document.getElementById('graf');
         var data = {
