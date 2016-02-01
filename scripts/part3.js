@@ -205,6 +205,6 @@ var part3controller = {
     
     clearPart3: function() {
         this._log = [];
-        $('#part3Content').html();
+        $('#part3Content').empty();
     }
 };
