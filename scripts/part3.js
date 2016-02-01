@@ -30,6 +30,7 @@ var part3controller = {
     },
 
     stringalign: function (ainstr, binstr, mispen, gappen, skwpen) {
+        var gapSign = '_';
         s1 = ainstr.split('');
         s2 = binstr.split('');
         var i, j, k;
@@ -78,14 +79,14 @@ var part3controller = {
             }
             else if (dn < rt) {
                 s1Out[k] = s1[i - 1];
-                s2Out[k] = '-';
-                summary[k++] = '-';
+                s2Out[k] = gapSign;
+                summary[k++] = gapSign;
                 i--;
             }
             else {
-                s1Out[k] = '-';
+                s1Out[k] = gapSign;
                 s2Out[k] = s2[j - 1];
-                summary[k++] = '-';
+                summary[k++] = gapSign;
                 j--;
             }
             marked[i][j] = 1;
@@ -200,5 +201,10 @@ var part3controller = {
         this.calculateNode(tree._root.children[0]);
         this.displayLog();
         nextStep(5);
+    },
+    
+    clearPart3: function() {
+        this._log = [];
+        $('#part3Content').html();
     }
 };
