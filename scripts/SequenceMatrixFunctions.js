@@ -15,6 +15,8 @@ function DrawSequenceDistanceMatrix()
     nextStep(1);
     var matrix = CreateSequenceDistanceMatrix();
     DrawMatrix(matrix, 'sequenceDistanceMatrix');
+    $('#treeAll').prop('disabled', false);
+    $('#treeNextStep').prop('disabled', false);
 }
 
 // funkcja tworz�ca tablic� odleg�o�ci na podstawie sekwencji
