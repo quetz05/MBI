@@ -72,7 +72,7 @@ var treeBuilder = {
         }
         //namazianie
         //this._lePrinte(this._initialParsedArray);
-        $('<div id="krok-'+ this._stepNum+ '" style="color:green;"><h2>Krok #' + (this._stepNum + 1 ) + '</h2></div>').appendTo('#jarkowaEnklawa')
+        $('<div id="krok-' + this._stepNum + '" style="color:green;"><h2>Krok #' + (this._stepNum + 1 ) + '</h2></div>').appendTo('#jarkowaEnklawa')
 
         $('<h3>Tablica z poprzedniego kroku</h3>').appendTo('#jarkowaEnklawa')
 
@@ -106,13 +106,13 @@ var treeBuilder = {
                 var partialStep = current.steps[j];
                 var valCell = $('#init-' + this._stepNum + 'x' + partialStep[0] + '-' + partialStep[1]);
 
-                vals +=valCell.html().toString();
+                vals += valCell.html().toString();
 
-                vals += (j === current.steps.length -1 )? ')' :" + ";
+                vals += (j === current.steps.length - 1 ) ? ')' : " + ";
                 valCell.css("background", colors[i]);
 
             }
-            $('<p><strong style="color:'+ colors[i] +';">' + vals + '/' + current.steps.length + ' = ' +
+            $('<p><strong style="color:' + colors[i] + ';">' + vals + '/' + current.steps.length + ' = ' +
                 $('#curr-' + this._stepNum + 'x' + current.y + '-' + current.x).html() +
                 '</strong></p>').appendTo('#desc-curr' + this._stepNum)
 
@@ -123,13 +123,13 @@ var treeBuilder = {
         this._prevStepArray = processedArray;
 
         //przeniesienie guzika pod ostatni krok
-        $('#treeNextStep').insertAfter('#step-curr'+ (this._stepNum - 1 ))
+        $('#treeNextStep').insertAfter('#step-curr' + (this._stepNum - 1 ))
 
         $('html, body').animate({
             scrollTop: $('#krok-' + (this._stepNum - 1 )).offset().top
         }, 1500);
 
-        if(processedArray.header.length === 2){
+        if (processedArray.header.length === 2) {
             $('#treeNextStep').remove();
             $('<div style="color:green;"><strong>Drzewo UPGMA zbudowane</strong></div>').appendTo('#jarkowaEnklawa')
             this._finalArray = processedArray;
@@ -140,7 +140,7 @@ var treeBuilder = {
 
 
     }, _lePrinte: function (analyzedObject, type) {
-        var table = '<div id="step-'+ type + this._stepNum+'" class="row"><div class="col-md-6"><table class="table table-bordered "><thead><th></th>';
+        var table = '<div id="step-' + type + this._stepNum + '" class="row"><div class="col-md-6"><table class="table table-bordered "><thead><th></th>';
 
 
         for (var i = 0; i < analyzedObject.header.length; ++i) {
@@ -159,7 +159,7 @@ var treeBuilder = {
             table += '</tr>'
 
         }
-        table += '</tbody></table></div><div id="desc-'+ type + + this._stepNum + '" class="col-md-6"></div></div>';
+        table += '</tbody></table></div><div id="desc-' + type + +this._stepNum + '" class="col-md-6"></div></div>';
         $(table).appendTo('#jarkowaEnklawa')
     },
     _buildGraphVizData: function (node, parentId, nodes, edges) {
@@ -181,7 +181,7 @@ var treeBuilder = {
         }
 
     },
-    _drawTree: function(){
+    _drawTree: function () {
         var nodes = [];
         var edges = [];
 
@@ -226,7 +226,8 @@ var treeBuilder = {
             if (i === lower) {
                 columnName = {
                     name: lowerName + higherName,
-                    prevIndexes: analyzed.header[lower].prevIndexes.concat(analyzed.header[higher].prevIndexes) // Dodajemy poprzednie indeksy - składowe
+                    prevIndexes: analyzed.header[lower].prevIndexes.concat(analyzed.header[higher].prevIndexes), // Dodajemy poprzednie indeksy - składowe
+                    seq: null
                 };
 
                 //sprawdzamy, czy składowe nowego tworu były proste czy też złożone z kilku
@@ -309,7 +310,7 @@ var treeBuilder = {
         parsed.val = initialArray.val;
 
         for (var i = 0; i < initialArray.header.length; ++i) {
-            parsed.header.push({name: initialArray.header[i], prevIndexes: []})
+            parsed.header.push({name: initialArray.header[i], seq: initialArray.seq[i], prevIndexes: []})
         }
 
         return parsed;
@@ -423,11 +424,14 @@ var treeBuilder = {
         var lowerNode = this._tree.findNodeAndRemove(lowerName);
         var higherNode = this._tree.findNodeAndRemove(higherName);
 
-        if (lowerNode === -1)
+        if (lowerNode === -1) {
             lowerNode = new MBINode(lowerName);
-        if (higherNode === -1)
+            lowerNode.seq = array.header[lower].seq;
+        }
+        if (higherNode === -1) {
             higherNode = new MBINode(higherName);
-
+            higherNode.seq = array.header[higher].seq;
+        }
         var newNode = new MBINode(lowerName + higherName);
 
         var higherNodeLength = higherNode.getLengthToTheBottom();

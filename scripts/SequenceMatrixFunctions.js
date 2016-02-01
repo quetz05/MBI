@@ -1,8 +1,8 @@
-// funkcja rysuj¹ca tablicê odleg³oœci na podstawie sekwencji
+// funkcja rysujï¿½ca tablicï¿½ odlegï¿½oï¿½ci na podstawie sekwencji
 function DrawSequenceDistanceMatrix()
 {
     var matrixSize = $('#inputNo').val();
-    //sprawdzanie czy istniej¹ sekwencje puste
+    //sprawdzanie czy istniejï¿½ sekwencje puste
     for(var i = 1; i <= matrixSize; i++)
         if($('#input' + i.toString()).val() == '')
         {
@@ -17,25 +17,27 @@ function DrawSequenceDistanceMatrix()
     DrawMatrix(matrix, 'sequenceDistanceMatrix');
 }
 
-// funkcja tworz¹ca tablicê odleg³oœci na podstawie sekwencji
+// funkcja tworzï¿½ca tablicï¿½ odlegï¿½oï¿½ci na podstawie sekwencji
 function CreateSequenceDistanceMatrix()
 {
-    // wielkoœæ macierzy
+    // wielkoï¿½ï¿½ macierzy
     var matrixSize = $('#inputNo').val();
 
     //tworzenie struktury macierzy
     var matrix =
     {
         header: [matrixSize],
-        val: []
+        val: [],
+        seq: []
     };
 
     for(var i=0; i < matrixSize; i++)
     {
         matrix.header[i] = 'Sekwencja ' + (i+1).toString();
         matrix.val[i] = [matrixSize];
+        matrix.seq[i] = $('#input' + (i+1).toString()).val();
 
-        // wype³nianie wiersza
+        // wypeï¿½nianie wiersza
         for(var j = 0; j < matrixSize; j++)
         {
             if((j-i) > 0)
@@ -50,7 +52,7 @@ function CreateSequenceDistanceMatrix()
     return matrix;
 }
 
-// funkcja rysuj¹ca macierz (w postaci tabeli) i wstawiaj¹ca j¹ na stronê
+// funkcja rysujï¿½ca macierz (w postaci tabeli) i wstawiajï¿½ca jï¿½ na stronï¿½
 function DrawMatrix(matrix, id)
 {
     // Wypisanie tabelki
@@ -75,7 +77,7 @@ function DrawMatrix(matrix, id)
     $('#sequenceDistanceMatrix').html(table);
 }
 
-//funkcja tworz¹ca macierz NeedlemanaWunscha i zwracaj¹ca wartoœæ z jej prawego dolnego rogu (oznaczaj¹c¹ odleg³oœæ ci¹gów)
+//funkcja tworzï¿½ca macierz NeedlemanaWunscha i zwracajï¿½ca wartoï¿½ï¿½ z jej prawego dolnego rogu (oznaczajï¿½cï¿½ odlegï¿½oï¿½ï¿½ ciï¿½gï¿½w)
 function NeedlemanWunsch(sequence1, sequence2)
 {
     var sameCharScore = parseInt($('#sameDistance').val());

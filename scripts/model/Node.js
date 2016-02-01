@@ -2,6 +2,7 @@ function MBINode(name){
     this.name = name;
     this.children = [];
     this.parentDist = -1;
+    this.seq = null;
 }
 
 MBINode.prototype.insertChild = function(node){
