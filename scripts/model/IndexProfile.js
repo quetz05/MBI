@@ -37,13 +37,8 @@ IndexProfile.prototype.addSymbol = function(symbol) {
     }
 };
 
-IndexProfile.prototype.getProfilePropability = function() {
-    return {
-        A: this.values.A / this.counter,
-        T: this.values.T / this.counter,
-        G: this.values.G / this.counter,
-        C: this.values.C / this.counter
-    };
+IndexProfile.prototype.getProfilePropability = function(identifier) {
+    return this.values[identifier] / this.counter;
 };
 
 IndexProfile.prototype.getMostPropablyChar = function() {

@@ -148,15 +148,56 @@ var part3controller = {
         return summarySeq;
     },
 
-    displayProfile: function(profile) {
-
+    getProfileRowHTML: function (profile, char) {
+        var rowHTML = "";
+        rowHTML += '<tr>' +
+            '<td style="border: 1px solid black; background: lightblue">' + char + '</td>';
+        profile.forEach(function (indexProf) {
+            rowHTML += '<td style="border: 1px solid black;">' + indexProf.getProfilePropability(char) + '</td>';
+        });
+        rowHTML += '</tr>';
+        return rowHTML;
     },
 
-    displayLog: function(){
+    getProfileHTML: function (profile) {
+        var profileHTML = '<table style="text-align: center; width:100%">';
+        profileHTML += this.getProfileRowHTML(profile, 'A');
+        profileHTML += this.getProfileRowHTML(profile, 'T');
+        profileHTML += this.getProfileRowHTML(profile, 'G');
+        profileHTML += this.getProfileRowHTML(profile, 'C');
+        //end table
+        profileHTML += '</table>';
+        return profileHTML;
+    },
 
+    getStepHtml: function(stepContent) {
+        var vm = this;
+        var stepHTML = "";
+        stepHTML += '<h2>' + stepContent.Name + '</h2><h4>a) Needleman-Wunsch:</h4> ' +
+            '<table> ' +
+            '<tr> <td>1)</td> <td>' + stepContent.NWObject.s1 + '</td> </tr> ' +
+            '<tr> <td>2)</td> <td>' + stepContent.NWObject.s2 + '</td> </tr> ' +
+            '</table>';
+        stepHTML += '<h4>b) Profil:</h4>';
+        stepHTML += vm.getProfileHTML(stepContent.Profile);
+
+        stepHTML += '<h4>c) Sekwencja konsensusowa:</h4>';
+        stepHTML += '<a>' + stepContent.SummarySeq + '</a>';
+
+        return stepHTML;
+    },
+
+    displayLog: function () {
+        var vm = this;
+        var contentHTML = '';
+        this._log.forEach(function(log) {
+            contentHTML += vm.getStepHtml(log);
+        });
+        $('#part3Content').html(contentHTML);
     },
 
     runPart3: function (tree) {
         this.calculateNode(tree._root.children[0]);
+        this.displayLog();
     }
 };
