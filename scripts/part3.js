@@ -200,5 +200,10 @@ var part3controller = {
     runPart3: function (tree) {
         this.calculateNode(tree._root.children[0]);
         this.displayLog();
+    },
+    
+    clearPart3: function() {
+        this._log = [];
+        $('#part3Content').html();
     }
 };
